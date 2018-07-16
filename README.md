@@ -1,5 +1,5 @@
 # Multivariable Calculus Demos
-Some Jupyter notebooks demonstrating some fundamental concepts of multivariable calculus.
+A collection of Jupyter notebooks demonstrating the fundamental concepts of multivariable calculus.
 
 Include the following subjects:
 * The Gradient
