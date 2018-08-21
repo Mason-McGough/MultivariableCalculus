@@ -27,9 +27,10 @@ X, Y, Z = np.broadcast_arrays(Xm, Ym, Zm)
 f = lambda x, y, t : (x + t * np.sin(y), y + t * np.sin(x))
 
 def data_gen(t=0):
-    increment = 0.002
+    increment = 0.02
     cnt = 0
-    while cnt < 1000:
+    max_cnt = 200
+    while cnt < max_cnt:
         cnt += 1
         t += increment
 
@@ -82,6 +83,15 @@ def run(data):
 
     return surf,
 
-ani = animation.FuncAnimation(fig, run, data_gen, blit=False, interval=1,
+ani = animation.FuncAnimation(fig, run, data_gen, blit=False, interval=100,
                               repeat=False, init_func=init)
-plt.show()
+
+# Writer = animation.writers['ffmpeg']
+# writer = Writer(fps=15, metadata=dict(artist='Mason McGough'), bitrate=1800)
+# ani.save('jacobian.mp4', writer=writer)
+
+Writer = animation.writers['imagemagick']
+writer = Writer(fps=12, metadata=dict(artist='Mason McGough'), bitrate=-1)
+ani.save('jacobian.gif', writer=writer)
+
+# plt.show()
