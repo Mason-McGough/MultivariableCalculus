@@ -14,8 +14,8 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.animation as animation
 
-X = np.arange(-5, 5, 0.25)
-Y = np.arange(-5, 5, 0.25)
+X = np.arange(-5, 5, 0.5)
+Y = np.arange(-5, 5, 0.5)
 nrows, ncols = X.shape[0], Y.shape[0]
 rii = list(xrange(0, nrows))
 cii = list(xrange(0, ncols))
@@ -27,10 +27,19 @@ X, Y, Z = np.broadcast_arrays(Xm, Ym, Zm)
 f = lambda x, y, t : (x + t * np.sin(y), y + t * np.sin(x))
 
 def data_gen(t=0):
+    increment = 0.002
     cnt = 0
     while cnt < 1000:
         cnt += 1
-        t += 0.001
+        t += increment
+
+        if t >= 1.0:
+            t = 1.0
+            increment = -increment
+        elif t <= 0.0:
+            t = 0.0
+            increment = -increment
+
         x, y = f(X, Y, t)
         tx, ty, tZ = np.transpose(x), np.transpose(y), np.transpose(Z)
 
@@ -46,7 +55,6 @@ def data_gen(t=0):
                     for xl, yl, zl in zip(xlines, ylines, zlines)]
                 + [list(zip(xl, yl, zl))
                     for xl, yl, zl in zip(txlines, tylines, tzlines)])
-
 
         yield lines
 
@@ -74,6 +82,6 @@ def run(data):
 
     return surf,
 
-ani = animation.FuncAnimation(fig, run, data_gen, blit=False, interval=10,
+ani = animation.FuncAnimation(fig, run, data_gen, blit=False, interval=1,
                               repeat=False, init_func=init)
 plt.show()
